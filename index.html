@@ -4,6 +4,14 @@
 
     height:100vh;
 
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    overflow:hidden;
+
     transform:
         scale(1.25);
 
@@ -323,6 +331,59 @@ body {
 }
 
 
+.preview-sign {
+    margin-top: 8px;
+    margin-right: 10px;
+    padding-right: 4px;
+    text-align: right;
+    font-family:
+        "STKaiti",
+        "KaiTi",
+        serif;
+    font-size: 12px;
+    line-height: 1.55;
+    color: #9d536f;
+    letter-spacing: 2px;
+    position: relative;
+    transform: rotate(-2deg) translateX(-4px);
+    transform-origin: right center;
+    opacity: .92;
+}
+
+.preview-sign::before {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: -5px;
+    width: 48px;
+    height: 1px;
+    background: rgba(157,83,111,.35);
+}
+
+.preview-sign::after {
+    content: "✦";
+    position: absolute;
+    right: -3px;
+    bottom: -8px;
+    font-size: 10px;
+    color: rgba(157,83,111,.55);
+}
+
+.preview-sign {
+    animation: signAppear 1.8s ease both;
+}
+
+@keyframes signAppear {
+    from {
+        opacity:0;
+        transform:translateY(8px) rotate(-6deg);
+    }
+    to {
+        opacity:.92;
+        transform:translateY(0) rotate(-2deg) translateX(-4px);
+    }
+}
+
 .envelope-wrapper.open
 .letter-preview {
 
@@ -622,8 +683,7 @@ body {
 
     z-index: 10;
 
-    animation:
-        fishSwimming 8s ease-in-out infinite;
+    animation:none;
 }
 
 
@@ -1028,13 +1088,9 @@ body {
 
     text-align: center;   /* 关键：文字整体居中 */
 
-}
     letter-spacing: .4px;
 
-    /*
-       不使用 blur
-    */
-
+    /* 不使用 blur */
     filter: none;
 
     text-shadow:
@@ -1655,6 +1711,12 @@ body {
         --fish-scale: .43;
     }
 
+    .fish-letter {
+
+        font-size: 16px;
+        line-height: 1.75;
+    }
+
     .reflection {
 
         transform:
@@ -1683,6 +1745,109 @@ body {
     }
 }
 
+
+/* ====== 升级效果：气泡 / 3D拆信 / 鱼游动增强 / 手机优化 ====== */
+
+.bubble {
+    position:absolute;
+    bottom:-40px;
+    border-radius:50%;
+    background:rgba(255,255,255,.35);
+    border:1px solid rgba(255,255,255,.45);
+    pointer-events:none;
+    z-index:12;
+    animation:bubbleRise linear forwards;
+}
+
+@keyframes bubbleRise {
+    0% { transform:translateY(0) scale(.8); opacity:0; }
+    20% { opacity:.8; }
+    100% { transform:translateY(-900px) scale(1.2); opacity:0; }
+}
+
+
+.fish-body {
+    animation:
+        fishBreathing 4s ease-in-out infinite,
+        fishBodyWave 3s ease-in-out infinite;
+}
+
+@keyframes fishBodyWave {
+    0%,100% { transform:rotate(0deg); }
+    50% { transform:rotate(.8deg); }
+}
+
+@media(max-width:600px){
+    .fish-letter {
+        width: 760px;
+        height: 430px;
+        left: 345px;
+        top: 150px;
+        padding: 8px 55px 20px 55px;
+        font-size: 13px;
+        line-height: 1.6;
+        transform: scale(.92);
+        transform-origin: center center;
+    }
+
+    .fish-letter h2 {
+        font-size: 24px;
+        margin-bottom: 12px;
+    }
+}
+
+
+/* ================= 开场星空与流星 ================= */
+#opening::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    pointer-events:none;
+    background-image:
+        radial-gradient(circle,rgba(255,255,255,.9) 1px,transparent 2px),
+        radial-gradient(circle,rgba(255,255,255,.7) 1.5px,transparent 3px),
+        radial-gradient(circle,rgba(255,240,250,.8) 1px,transparent 2px);
+    background-size:90px 90px,160px 160px,220px 220px;
+    animation:starMove 18s linear infinite;
+    opacity:.75;
+}
+
+@keyframes starMove{
+    from{background-position:0 0,40px 80px,120px 30px;}
+    to{background-position:0 600px,40px 680px,120px 630px;}
+}
+
+.meteor{
+    position:absolute;
+    width:3px;
+    height:140px;
+    background:linear-gradient(to bottom,rgba(255,255,255,0),#fff);
+    border-radius:999px;
+    transform:rotate(-45deg);
+    opacity:0;
+    filter:drop-shadow(0 0 8px white);
+    pointer-events:none;
+}
+
+.meteor.one{
+    right:20%;
+    top:5%;
+    animation:meteorMove 5s linear infinite 1s;
+}
+.meteor.two{
+    right:55%;
+    top:15%;
+    height:90px;
+    animation:meteorMove 7s linear infinite 3.5s;
+}
+
+@keyframes meteorMove{
+    0%{opacity:0;transform:translate(0,0) rotate(-45deg);}
+    10%{opacity:1;}
+    45%{opacity:0;transform:translate(-420px,420px) rotate(-45deg);}
+    100%{opacity:0;}
+}
+
 </style>
 </head>
 
@@ -1697,6 +1862,9 @@ body {
 ========================================================= -->
 
 <section id="opening">
+
+    <div class="meteor one"></div>
+    <div class="meteor two"></div>
 
     <div class="opening-content">
 
@@ -1722,6 +1890,10 @@ body {
             <div class="letter-preview">
            <br>
     讨厌猫の鱼
+    <div class="preview-sign">
+        山药<br>
+        2026.8.12
+    </div>
 </div>
 
 
@@ -1801,7 +1973,7 @@ body {
                 <div class="fish-letter">
 
                     <h2>
-                        致我最好的朋友
+                        致我的好朋友
                     </h2>
 
 
@@ -1820,31 +1992,31 @@ body {
                     <p>
                         在那之后，我带你认识了很多新朋友，
                         鹿子、烟雨江南、gv、猪仔，
-                        他们心中一定都有你这位特别讨喜的朋友。
+                        看起来你跟鹿子应该相处得最好。
                     </p>
 
 
                     <p>
                         五六年的相处中，我们有过很多美好的回忆，
-                        很开心我们能够真心相待，我相信你与认识的好朋友之间都相互珍惜。
+                        很开心我们能够真心相待，我希望以后也一直这样相互珍惜下去。
                     </p>
 
 
                     <p>
-                        对于你来说，环境的变化可能会让你无所适从，但别给自己太大压力。
-                        在我看来，你一定会很快适应新的同学和环境。
+                        最近又和你打上瓦了，你真的有了很大的进步呐，你等着我真的要在练了。
+                        那时虽然你打得菜，但我更多的是调侃，绝对没有嘲笑你。
                     </p>
 
 
                     <p>
-                        纵使你有很多不足，也做过错一些事，但人无完人，
+                        虽然你做过错一些事，但人无完人，
                         我相信你会变得更加成熟、更加稳重，
-                        所谓成长就是一个从无知到成熟、从依赖到独立的过程。
+                        所谓成长就是一个从无知到成熟的过程。
                     </p>
 
 
                     <p>
-                        虽然我不太会说华丽的话，但真心祝你天天开心、永远安康。
+                        我不太会说华丽的话，但真心祝你天天开心、永远安康。
                     </p>
 
 
@@ -1994,6 +2166,7 @@ function openLetter() {
         .catch(() => {
 
             musicPlaying = false;
+            musicControl.innerHTML = "🔇";
 
         });
 
@@ -2225,9 +2398,12 @@ function animateParticles() {
     particleCtx.clearRect(
         0,
         0,
-        window.innerWidth,
-        window.innerHeight
+        particleCanvas.width,
+        particleCanvas.height
     );
+
+    // 重置 Canvas 绘制状态
+    particleCtx.shadowBlur = 0;
 
 
     if (
@@ -2362,6 +2538,11 @@ function createHeart(
     y
 ) {
 
+    // 限制同时存在的爱心数量，避免高速移动导致性能下降
+    if (document.querySelectorAll(".heart-trail").length > 35) {
+        return;
+    }
+
     const heart =
         document.createElement("div");
 
@@ -2472,6 +2653,34 @@ document.addEventListener(
 ========================================================= */
 
 music.load();
+
+
+
+/* ====== 升级效果脚本 ====== */
+
+function createBubble(){
+    const bubble=document.createElement('div');
+    bubble.className='bubble';
+
+    const size=Math.random()*18+8;
+    bubble.style.width=size+'px';
+    bubble.style.height=size+'px';
+    bubble.style.left=(Math.random()*100)+'%';
+    bubble.style.animationDuration=(Math.random()*5+5)+'s';
+
+    const page=document.getElementById('letter-page');
+    page.appendChild(bubble);
+
+    setTimeout(()=>bubble.remove(),10000);
+}
+
+setInterval(()=>{
+    if(document.getElementById('letter-page').classList.contains('show')){
+        createBubble();
+    }
+},450);
+
+// 鱼尾动画交由 CSS 控制，避免 JS transform 覆盖动画状态
 
 </script>
 
